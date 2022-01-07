@@ -31,7 +31,7 @@ const KCProductCard = (props) => {
                 </Box>
                 <Divider />
                 <Box sx={{ padding: '10px' }}>
-                    <Button variant={'contained'} disabled={!props.isAvailable} sx={{ width: '100%' }} startIcon={<AddShoppingCartIcon />} onClick={props.handleAddToCart}>Add to Cart</Button>
+                    <Button variant={'contained'} color={'success'} disabled={!props.isAvailable} sx={{ width: '100%' }} startIcon={<AddShoppingCartIcon />} onClick={props.handleAddToCart}>Add to Cart</Button>
                 </Box>
             </Paper>
         )

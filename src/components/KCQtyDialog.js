@@ -13,8 +13,8 @@ const KCQtyDialog = (props) => {
                 <TextField type={"number"} value={qty} onChange={(e)=>handleChange(e.target.value)} />
             </DialogContent>
             <DialogActions>
-                <Button startIcon={<CancelIcon />} onClick={handleClose} >Cancel</Button>
-                <Button startIcon={<AddShoppingCartIcon />} variant={'contained'} onClick={handleAddToCart}>Add</Button>
+                <Button color={'error'} startIcon={<CancelIcon />} onClick={handleClose} >Cancel</Button>
+                <Button color={'success'} startIcon={<AddShoppingCartIcon />} variant={'contained'} onClick={handleAddToCart}>Add</Button>
             </DialogActions>
         </Dialog>
     )

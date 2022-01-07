@@ -14,19 +14,33 @@ import md5 from 'md5';
 import Fuse from 'fuse.js';
 
 //menus mock
-const menus = [{
-    "text": "Makanan",
-    "value": 'food',
-    "isActive": true,
-}, {
-    "text": "Minuman",
-    "value": 'drink',
-    "isActive": false,
-}, {
-    "text": "Cemilan",
-    "value": 'cemilan',
-    "isActive": false,
-}];
+const menus = [
+    {
+        "text": "Makanan",
+        "value": 'food',
+        "isActive": true,
+    },
+    {
+        "text": "Minuman",
+        "value": 'drink',
+        "isActive": false,
+    },
+    {
+        "text": "Cemilan",
+        "value": 'cemilan',
+        "isActive": false,
+    },
+    {
+        "text": "categori-4",
+        "value": 'cat4',
+        "isActive": false,
+    },
+    {
+        "text": "categori-5",
+        "value": 'cat5',
+        "isActive": false,
+    }
+];
 //product mock
 const productmock = [
     {
@@ -134,7 +148,7 @@ const KCHome = () => {
     const [ic_st_productList, ic_st_setProductList] = useState([]);
     const [ic_st_filterdProductList, ic_st_setFilterdProductList] = useState([]);
     const [ic_st_isLoading, ic_st_setIsLoading] = useState(false);
-    const [ic_st_menus, ic_st_setMenus] = useState(menus); 
+    const [ic_st_menus, ic_st_setMenus] = useState(menus);
     const [ic_st_isReady, ic_st_setIsReady] = useState(false); //this is to prevent no items loaded at first load...
     //changes products based on active category
     const handleCategoryChange = (productList, category) => {
@@ -183,6 +197,10 @@ const KCHome = () => {
     }
     //get all products 
     useEffect(() => {
+        ic_st_setIsLoading(true);
+        setTimeout(()=>{
+            ic_st_setIsLoading(false);
+        },1000)
         //getting data from db
         ic_st_setProductList(productmock);
         //set filtered product list

@@ -65,8 +65,8 @@ const KCDialogCart = (props) => {
                 }
             </DialogContent>
             <DialogActions>
-                <Button startIcon={<CancelIcon />} onClick={() => handleClose()} >Tutup</Button>
-                <Button startIcon={<AddShoppingCartIcon />} variant={'contained'} onClick={() => {
+                <Button color={'error'} startIcon={<CancelIcon />} onClick={() => handleClose()} >Tutup</Button>
+                <Button color={'success'} startIcon={<AddShoppingCartIcon />} variant={'contained'} onClick={() => {
 
                 }} disabled={Object.keys(cart).length === 0} >Order</Button>
             </DialogActions>
