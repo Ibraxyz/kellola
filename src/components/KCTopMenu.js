@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Chip, Skeleton } from '@mui/material';
+import md5 from 'md5';
 
 const KCTopMenu = (props) => {
     const { menus, handleClick } = props;
@@ -8,7 +9,7 @@ const KCTopMenu = (props) => {
             {
                 menus.map((menu) => {
                     return (
-                        <Chip label={menu.text} onClick={() => handleClick(menu.value)} sx={{ marginRight: '10px' }} />
+                        <Chip key={md5(menu.text + menu.value)} label={menu.text} onClick={() => handleClick(menu.value)} sx={{ marginRight: '10px' }} />
                     )
                 })
             }

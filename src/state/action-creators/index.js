@@ -33,3 +33,12 @@ export const updateCurrentCart = (payload)=>{
         });
     }
 }
+
+export const updateCurrentSearchKeyword = (payload)=>{
+    return(dispatch)=>{
+        dispatch({
+            "type" : "UPDATE_SEARCH_KEYWORD",
+            "payload" : payload
+        });
+    }
+}

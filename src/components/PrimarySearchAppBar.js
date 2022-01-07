@@ -17,7 +17,10 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useSelector } from 'react-redux';
+//redux
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from 'redux';
+import { actionCreators } from "../state/index";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -66,6 +69,9 @@ const PrimarySearchAppBar = (props) => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  //redux 
+  const dispatch = useDispatch();
+  const { updateCurrentSearchKeyword } = bindActionCreators(actionCreators, dispatch);
   const r_currentUser = useSelector((state) => state.currentUser);
 
   const handleProfileMenuOpen = (event) => {
@@ -192,6 +198,10 @@ const PrimarySearchAppBar = (props) => {
             <StyledInputBase
               placeholder="Cari sesuatu..."
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(e) => {
+                console.log(e.target.value);
+                updateCurrentSearchKeyword(e.target.value);
+              }}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
@@ -210,7 +220,7 @@ const PrimarySearchAppBar = (props) => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <Chip aria-haspopup={'true'} sx={{ color: '#fff' }} avatar={<Avatar sx={{backgroundColor:'#fff'}}>{r_currentUser === null ? '-' : r_currentUser.name[0].toUpperCase()}</Avatar>} label={r_currentUser === null ? '-' : r_currentUser.name.split(" ")[0]} onClick={handleProfileMenuOpen} />
+            <Chip aria-haspopup={'true'} sx={{ color: '#fff' }} avatar={<Avatar sx={{ backgroundColor: '#fff' }}>{r_currentUser === null ? '-' : r_currentUser.name[0].toUpperCase()}</Avatar>} label={r_currentUser === null ? '-' : r_currentUser.name.split(" ")[0]} onClick={handleProfileMenuOpen} />
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton

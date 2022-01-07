@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, LinearProgress, Skeleton } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 //comps
 import KCTopMenu from '../components/KCTopMenu';
 import KCProductCard from '../components/KCProductCard';
@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { actionCreators } from "../state/index";
 import md5 from 'md5';
+import Fuse from 'fuse.js';
 
 const productmock = [
     {
@@ -95,6 +96,13 @@ const productmock = [
         "category": 'drink'
     },
 ]
+//fuse search
+const options = {
+    includeScore: true,
+    // Search in `author` and in `tags` array
+    keys: ['name', 'category']
+}
+let fuse = null;
 
 const KCHome = () => {
     //redux 
@@ -104,11 +112,13 @@ const KCHome = () => {
     const r_currentLoginStatus = useSelector((state) => state.currentLoginStatus);
     const r_currentUser = useSelector((state) => state.currentUser);
     const r_currentCart = useSelector((state) => state.currentCart);
+    const r_currentSearchKeyword = useSelector((state) => state.currentSearchKeyword);
     //state
     const [ic_st_isQtyDialogOpen, ic_st_setIsQtyDialogOpen] = useState(false);
     const [ic_st_currentSelectedProd, ic_st_setCurrentSelectedProd] = useState({});
     const [ic_st_currentActiveCategory, ic_st_setCurrentActiveCategory] = useState('food');
     const [ic_st_productList, ic_st_setProductList] = useState([]);
+    const [ic_st_filterdProductList, ic_st_setFilterdProductList] = useState([]);
     const [ic_st_isLoading, ic_st_setIsLoading] = useState(false);
     //snackbar
     const [h_st_isSnackbarShown, h_st_message, h_st_severity, h_sf_showSnackbar, h_sf_closeSnackbar] = useSnackbar();
@@ -160,29 +170,46 @@ const KCHome = () => {
         h_sf_showSnackbar(`Menambahkan ${ic_st_currentSelectedProd.qty} ${ic_st_currentSelectedProd.name} ke dalam cart`, 'success');
         ic_st_setIsQtyDialogOpen(false);
     }
-    //filter product based on current active category
+    //get all products
     useEffect(() => {
-        ic_st_setIsLoading(true); //simulate network request
-        setTimeout(() => {
-            ic_st_setIsLoading(false); //simulate network request
-        }, 800)
-        const productList = productmock.filter((p) => {
-            return p.category === ic_st_currentActiveCategory
-        });
-        ic_st_setProductList(productList);
-    }, [ic_st_currentActiveCategory])
+        //getting data from db
+        ic_st_setProductList(productmock);
+        //set filtered product list
+        ic_st_setFilterdProductList(productmock);
+    }, [])
+    //if all product already downloaded, set the fuse
+    useEffect(() => {
+        fuse = new Fuse(ic_st_productList, options) //set fuse product
+    }, [ic_st_productList])
+    //filter product based on search keyword
+    useEffect(() => {
+        console.log('search keyword', r_currentSearchKeyword);
+        if (r_currentSearchKeyword === "") {
+            ic_st_setFilterdProductList(ic_st_productList);
+        } else {
+            if (fuse !== null) {
+                const result = fuse.search(r_currentSearchKeyword)
+                const filtered = result.map((res) => {
+                    return {
+                        ...res.item
+                    }
+                })
+                console.log(JSON.stringify(filtered));
+                ic_st_setFilterdProductList(filtered);
+            }
+        }
+    }, [r_currentSearchKeyword])
     return (
         <Box>
             <KCTopMenu menus={menus} handleClick={(v) => { ic_st_setCurrentActiveCategory(v) }} />
             <Grid container spacing={1}>
                 {
-                    ic_st_productList.length === 0 ? <>Tidak ada item</> : ic_st_productList.map((product) => {
+                    ic_st_filterdProductList.length === 0 ? <Box textAlign={'center'} sx={{ padding: '10px' }}><Typography variant={'subtitle1'}>Tidak ada item</Typography></Box> : ic_st_filterdProductList.map((product) => {
                         const { id, name, imgSrc, price, isAvailable, description } = product;
                         return (
-                            <Grid item xs={12} sm={6} md={4} lg={3} >
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={md5(id + name + price + description)}>
                                 <KCProductCard
                                     isLoading={ic_st_isLoading}
-                                    key={md5(id + name + price + description)}
                                     id={id}
                                     name={name}
                                     imgSrc={imgSrc}
