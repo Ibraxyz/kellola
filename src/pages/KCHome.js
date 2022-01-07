@@ -87,22 +87,27 @@ const KCHome = () => {
         ic_st_setCurrentSelectedProd(obj);
     }
     const addToCart = (id, name, price, qty) => {
-        if (qty === 0) {
-            h_sf_showSnackbar('QTY must be larger than zero', 'error');
+        if (qty === 0 || qty === undefined) {
+            h_sf_showSnackbar('QTY must be larger than zero and can not be empty', 'error');
             return;
         }
         //update current cart
         const cart = { ...r_currentCart };
-        cart[id] = {
-            "id": md5(Date.now() + id),
-            "productId": id,
-            "name": name,
-            "price" : price,
-            "qty": qty,
-            "total" : price * qty
+        if (cart[id] != undefined) { //if cart already contain same item, just add the qty
+            cart[id]['qty'] = parseInt(cart[id]['qty']) + parseInt(qty);
+            cart[id]['total'] = cart[id]['qty'] * cart[id]['price']
+        } else { //if not, construct the cart
+            cart[id] = {
+                "id": md5(Date.now() + id),
+                "productId": id,
+                "name": name,
+                "price": price,
+                "qty": qty,
+                "total": price * qty
+            }
         }
         updateCurrentCart(cart);
-        h_sf_showSnackbar(`Berhasil menambahkan ${ic_st_currentSelectedProd.qty} ${ic_st_currentSelectedProd.name} ke dalam cart`, 'success');
+        h_sf_showSnackbar(`Menambahkan ${ic_st_currentSelectedProd.qty} ${ic_st_currentSelectedProd.name} ke dalam cart`, 'success');
         ic_st_setIsQtyDialogOpen(false);
     }
     return (
@@ -114,6 +119,7 @@ const KCHome = () => {
                         return (
                             <Grid item xs={12} sm={6} md={4} lg={3} >
                                 <KCProductCard
+                                    key={md5(id + name + price + description)}
                                     id={id}
                                     name={name}
                                     imgSrc={imgSrc}

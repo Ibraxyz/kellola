@@ -9,28 +9,28 @@ import RMSCleanTable from '../components/RMSCleanTable';
 
 const KCDialogCart = (props) => {
     const { isOpen, cart, handleClose } = props;
+    const displayTable = (obj) => {
+        const keys = Object.keys(obj);
+        const objArr = keys.map((key) => {
+            return obj[key];
+        });
+        return (
+            <RMSCleanTable tableHead={['name', 'qty', 'price', 'total']} rows={objArr} />
+        );
+    }
     return (
         <Dialog open={isOpen}>
             <DialogTitle textAlign={'center'}>Your Cart</DialogTitle>
             <DialogContent>
                 {
-                    cart === undefined ? <></> : Object.keys(cart).length === 0 ? <Box><Typography variant={'subtitle2'}>Cart is Empty.</Typography></Box> : Object.keys(cart).map((key) => {
-                        const rowsArr = [];
-                        Object.keys(cart).forEach((c) => {
-                            rowsArr.push(cart[c]);
-                        })
-                        console.log(rowsArr);
-                        return (
-                            <RMSCleanTable tableHead={['name', 'qty', 'price', 'total']} rows={rowsArr} />
-                        )
-                    })
+                    displayTable(cart)
                 }
             </DialogContent>
             <DialogActions>
                 <Button startIcon={<CancelIcon />} onClick={() => handleClose()} >Cancel</Button>
                 <Button startIcon={<AddShoppingCartIcon />} variant={'contained'} onClick={() => {
 
-                }}>Order Now</Button>
+                }}>Order</Button>
             </DialogActions>
         </Dialog>
     )
