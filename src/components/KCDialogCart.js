@@ -34,7 +34,7 @@ const KCDialogCart = (props) => {
                 newCart[key]['total'] = parseInt(newCart[key]['total']) + parseInt(newCart[key]['price']);
                 break;
             case "dec":
-                if (newCart[key]['qty'] > 0) {
+                if (newCart[key]['qty'] > 1) {
                     newCart[key]['qty'] = parseInt(newCart[key]['qty']) - 1;
                     newCart[key]['total'] = parseInt(newCart[key]['total']) - parseInt(newCart[key]['price']);
                 }
