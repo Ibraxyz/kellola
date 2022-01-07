@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button } from '@mui/material';
+import { Table, Button, IconButton } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -8,6 +8,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { formatRupiah } from '../rms-utility/rms-utility';
 const RMSCleanTable = (props) => {
     return (
         <TableContainer component={Paper}>
@@ -35,12 +38,30 @@ const RMSCleanTable = (props) => {
                                     </TableCell>
                                     {
                                         props.tableHead.map((th) => {
+                                            console.log(`row[th]`, row[th])
                                             let displayedAs = row[th];
-                                            if (th === 'aksi') {
+                                            if (th === 'name') {
+                                                displayedAs = `${row[th]} x ( ${row['qty']} ) @ Rp ${formatRupiah(row['price'])}`
+                                            } else if (th === 'total') {
+                                                displayedAs = `Rp ${formatRupiah(row['total'])}`
+                                            } else if (th === 'aksi') {
                                                 displayedAs =
                                                     <>
                                                         <Button sx={{ marginRight: '5px' }} onClick={row['edit']} startIcon={<EditIcon />} variant={'contained'}>Edit</Button>
                                                         <Button onClick={row['hapus']} variant={'outlined'} startIcon={<DeleteIcon />}>Hapus</Button>
+                                                    </>
+                                            } else if (th === 'action') {
+                                                displayedAs =
+                                                    <>
+                                                        <IconButton sx={{ marginRight: '5px' }} onClick={row['dec']} variant={'outlined'}>
+                                                            <RemoveIcon />
+                                                        </IconButton>
+                                                        <IconButton sx={{ marginRight: '5px' }} onClick={row['inc']} variant={'outlined'}>
+                                                            <AddIcon />
+                                                        </IconButton>
+                                                        <IconButton onClick={row['hapus']} variant={'outlined'}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
                                                     </>
                                             }
                                             return (<TableCell align="left" >{displayedAs}</TableCell>)

@@ -13,6 +13,21 @@ import { actionCreators } from "../state/index";
 import md5 from 'md5';
 import Fuse from 'fuse.js';
 
+//menus mock
+const menus = [{
+    "text": "Makanan",
+    "value": 'food',
+    "isActive": true,
+}, {
+    "text": "Minuman",
+    "value": 'drink',
+    "isActive": false,
+}, {
+    "text": "Cemilan",
+    "value": 'cemilan',
+    "isActive": false,
+}];
+//product mock
 const productmock = [
     {
         "id": "produk1",
@@ -103,7 +118,6 @@ const options = {
     keys: ['name', 'category']
 }
 let fuse = null;
-
 const KCHome = () => {
     //redux 
     const dispatch = useDispatch();
@@ -120,19 +134,16 @@ const KCHome = () => {
     const [ic_st_productList, ic_st_setProductList] = useState([]);
     const [ic_st_filterdProductList, ic_st_setFilterdProductList] = useState([]);
     const [ic_st_isLoading, ic_st_setIsLoading] = useState(false);
+    const [ic_st_menus, ic_st_setMenus] = useState(menus); 
+    const [ic_st_isReady, ic_st_setIsReady] = useState(false); //this is to prevent no items loaded at first load...
+    //changes products based on active category
+    const handleCategoryChange = (productList, category) => {
+        ic_st_setFilterdProductList(productList.filter((product) => {
+            return product.category === category
+        }));
+    }
     //snackbar
     const [h_st_isSnackbarShown, h_st_message, h_st_severity, h_sf_showSnackbar, h_sf_closeSnackbar] = useSnackbar();
-    //menus mock
-    const menus = [{
-        "text": "Makanan",
-        "value": 'food'
-    }, {
-        "text": "Minuman",
-        "value": 'drink'
-    }, {
-        "text": "Cemilan",
-        "value": 'cemilan'
-    }];
     const handleAddToCart = (id, name, price) => {
         ic_st_setIsQtyDialogOpen(true);
         ic_st_setCurrentSelectedProd({
@@ -142,7 +153,7 @@ const KCHome = () => {
         })
     }
     const handleQTYChange = (num) => {
-        const obj = { ...ic_st_currentSelectedProd };
+        const obj = ic_st_currentSelectedProd;
         obj.qty = num
         ic_st_setCurrentSelectedProd(obj);
     }
@@ -170,38 +181,54 @@ const KCHome = () => {
         h_sf_showSnackbar(`Menambahkan ${ic_st_currentSelectedProd.qty} ${ic_st_currentSelectedProd.name} ke dalam cart`, 'success');
         ic_st_setIsQtyDialogOpen(false);
     }
-    //get all products
+    //get all products 
     useEffect(() => {
         //getting data from db
         ic_st_setProductList(productmock);
         //set filtered product list
         ic_st_setFilterdProductList(productmock);
+        //set fuse product
+        fuse = new Fuse(productmock, options)
     }, [])
-    //if all product already downloaded, set the fuse
-    useEffect(() => {
-        fuse = new Fuse(ic_st_productList, options) //set fuse product
-    }, [ic_st_productList])
     //filter product based on search keyword
     useEffect(() => {
         console.log('search keyword', r_currentSearchKeyword);
-        if (r_currentSearchKeyword === "") {
-            ic_st_setFilterdProductList(ic_st_productList);
+        if (ic_st_isReady === false) {
+            //do nothing
         } else {
-            if (fuse !== null) {
-                const result = fuse.search(r_currentSearchKeyword)
-                const filtered = result.map((res) => {
-                    return {
-                        ...res.item
-                    }
-                })
-                console.log(JSON.stringify(filtered));
-                ic_st_setFilterdProductList(filtered);
+            if (r_currentSearchKeyword === "") {
+                handleCategoryChange(ic_st_productList, ic_st_currentActiveCategory);
+            } else {
+                if (fuse !== null) {
+                    const result = fuse.search(r_currentSearchKeyword)
+                    const filtered = result.map((res) => {
+                        return {
+                            ...res.item
+                        }
+                    })
+                    ic_st_setFilterdProductList(filtered);
+                }
             }
+        }
+        //if filterAlreadyTouched value already true, there is  no need to change it again to true..
+        if (ic_st_isReady === false) {
+            ic_st_setIsReady(true);
         }
     }, [r_currentSearchKeyword])
     return (
         <Box>
-            <KCTopMenu menus={menus} handleClick={(v) => { ic_st_setCurrentActiveCategory(v) }} />
+            <KCTopMenu menus={ic_st_menus} handleClick={(v) => {
+                ic_st_setCurrentActiveCategory(v);
+                const menus = ic_st_menus;
+                const newMenu = menus.map((menu) => {
+                    return {
+                        ...menu,
+                        isActive: menu.value === v ? true : false,
+                    }
+                });
+                ic_st_setMenus(newMenu);
+                handleCategoryChange(ic_st_productList, v);
+            }} />
             <Grid container spacing={1}>
                 {
                     ic_st_filterdProductList.length === 0 ? <Box textAlign={'center'} sx={{ padding: '10px' }}><Typography variant={'subtitle1'}>Tidak ada item</Typography></Box> : ic_st_filterdProductList.map((product) => {

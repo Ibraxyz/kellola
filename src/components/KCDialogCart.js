@@ -26,16 +26,26 @@ const KCDialogCart = (props) => {
         })
         updateCurrentCart(newCart);
     }
-    const editItem = (key) => {
-
+    const editItem = (key, type) => {
+        switch (type) {
+            case "inc":
+                break;
+            case "dec":
+                break;
+            default:
+                break;
+        }
     }
     const displayTable = (obj) => {
         const keys = Object.keys(obj);
         const objArr = keys.map((key) => {
             return {
                 ...obj[key],
-                edit: () => {
-                    editItem(key);
+                inc: () => {
+                    editItem(key, 'inc');
+                },
+                dec: () => {
+                    editItem(key, 'dec');
                 },
                 hapus: () => {
                     deleteItem(key);
@@ -43,7 +53,7 @@ const KCDialogCart = (props) => {
             };
         });
         return (
-            <RMSCleanTable tableHead={['name', 'qty', 'price', 'total', 'aksi']} rows={objArr} />
+            <RMSCleanTable tableHead={['name', 'total', 'action']} rows={objArr} />
         );
     }
     return (
@@ -55,10 +65,10 @@ const KCDialogCart = (props) => {
                 }
             </DialogContent>
             <DialogActions>
-                <Button startIcon={<CancelIcon />} onClick={() => handleClose()} >Cancel</Button>
+                <Button startIcon={<CancelIcon />} onClick={() => handleClose()} >Tutup</Button>
                 <Button startIcon={<AddShoppingCartIcon />} variant={'contained'} onClick={() => {
 
-                }}>Order</Button>
+                }} disabled={Object.keys(cart).length === 0} >Order</Button>
             </DialogActions>
         </Dialog>
     )
