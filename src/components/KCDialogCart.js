@@ -27,14 +27,22 @@ const KCDialogCart = (props) => {
         updateCurrentCart(newCart);
     }
     const editItem = (key, type) => {
+        const newCart = { ...cart };
         switch (type) {
             case "inc":
+                newCart[key]['qty'] = parseInt(newCart[key]['qty']) + 1;
+                newCart[key]['total'] = parseInt(newCart[key]['total']) + parseInt(newCart[key]['price']);
                 break;
             case "dec":
+                if (newCart[key]['qty'] > 0) {
+                    newCart[key]['qty'] = parseInt(newCart[key]['qty']) - 1;
+                    newCart[key]['total'] = parseInt(newCart[key]['total']) - parseInt(newCart[key]['price']);
+                }
                 break;
             default:
                 break;
         }
+        updateCurrentCart(newCart);
     }
     const displayTable = (obj) => {
         const keys = Object.keys(obj);

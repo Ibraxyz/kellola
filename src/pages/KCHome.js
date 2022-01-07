@@ -198,13 +198,13 @@ const KCHome = () => {
     //get all products 
     useEffect(() => {
         ic_st_setIsLoading(true);
-        setTimeout(()=>{
+        setTimeout(() => {
             ic_st_setIsLoading(false);
-        },1000)
+        }, 1000)
         //getting data from db
         ic_st_setProductList(productmock);
         //set filtered product list
-        ic_st_setFilterdProductList(productmock);
+        handleCategoryChange(productmock, ic_st_currentActiveCategory);
         //set fuse product
         fuse = new Fuse(productmock, options)
     }, [])
