@@ -27,7 +27,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 function RMSTempDrawer(props) {
     const list = (anchor) => (
         <Box
-            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250, }}
             role="presentation"
             onClick={() => props.handleClick(false)}
             onKeyDown={() => props.handleClick(false)}
@@ -93,26 +93,20 @@ function RMSTempDrawer(props) {
                         <ListItemText primary={"Lihat Tagihan (Admin)"} />
                     </ListItem>
                 </Link>
-            </List>
-            <Divider />
-            <List>
                 <Link to="/lihat-laporan/" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Lihat Laporan"}>
+                    <ListItem button key={"Lihat Laporan (Admin)"}>
                         <ListItemIcon>
                             <BarChartIcon />
                         </ListItemIcon>
-                        <ListItemText primary={"Lihat Laporan"} />
+                        <ListItemText primary={"Lihat Laporan (Admin)"} />
                     </ListItem>
                 </Link>
-            </List>
-            <Divider />
-            <List>
                 <Link to="/manage-user" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Pengaturan User"}>
+                    <ListItem button key={"Pengaturan User (Admin)"}>
                         <ListItemIcon>
                             <SettingsIcon />
                         </ListItemIcon>
-                        <ListItemText primary={"Pengaturan User"} />
+                        <ListItemText primary={"Pengaturan User (Admin)"} />
                     </ListItem>
                 </Link>
             </List>
