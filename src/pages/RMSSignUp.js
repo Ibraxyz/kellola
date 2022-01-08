@@ -35,7 +35,7 @@ const RMSSignUp = (props) => {
             await setDoc(doc(collection(db, "user"), user.uid), obj);
             // ...
             ic_st_setIsLoading(false);
-            setMessage('User berhasil terdaftar');
+            h_sf_showSnackbar('Berhasil Mendaftar', 'success');
             setIsSnackbarShown(true);
             setTimeout(() => {
                 updateCurrentLoginStatus(true);
@@ -43,7 +43,7 @@ const RMSSignUp = (props) => {
         } catch (err) {
             console.log(err.message);
             ic_st_setIsLoading(false);
-            setMessage(err.message);
+            h_sf_showSnackbar(err.message, 'error');
             setIsSnackbarShown(true);
         }
     }
@@ -124,7 +124,7 @@ const RMSSignUp = (props) => {
             </Snackbar>
             <Grid container>
                 <Grid item sm={12} md={8} sx={{ display: { xs: 'block', sm: 'none', md: 'block' } }}>
-                    <div alt={''} style={{ backgroundSize: 'cover', backgroundImage: `url(${Dots})`, height: '100vh' }} >
+                    <div alt={''} style={{ backgroundSize: 'cover', backgroundImage: `url('https://cdn.pixabay.com/photo/2016/11/29/12/54/cafe-1869656_960_720.jpg')`, height: '100vh' }} >
 
                     </div>
                 </Grid>
@@ -134,7 +134,7 @@ const RMSSignUp = (props) => {
                             {ic_st_isLoginPage ? 'Masuk' : 'Daftar'}
                         </Typography>
                         <Box sx={{ textAlign: 'center' }}>
-                            <img src={Work} alt="" style={{ marginTop: '10px', marginBottom: '10px', width: '45%', height: 'auto' }} />
+                            <img src={'https://www.freepnglogos.com/uploads/coffee-logo-png/coffee-logo-design-creative-idea-logo-elements-2.png'} alt="" style={{ marginTop: '10px', marginBottom: '10px', width: '35%', height: 'auto' }} />
                         </Box>
                         <Typography variant="subtitle1" gutterBottom component="div">
                             {
@@ -149,7 +149,7 @@ const RMSSignUp = (props) => {
                         }
                         <RMSTextField isError={false} isRequired={true} displayFilter={"default"} type="text" label={"Email"} helperText={"Masukkan Email"} value={email} handleChange={(value) => setEmail(value)} />
                         <RMSTextField isError={false} isRequired={true} displayFilter={"default"} type="password" label={"Password"} helperText={"Masukkan Password"} value={password} handleChange={(value) => setPassword(value)} />
-                        <Button sx={{ margin: "5px" }} variant={"contained"} onClick={ic_st_isLoginPage ? () => { ic_sf_signInExistingUser(email, password) } : () => ic_sf_createUser(email, password)} disabled={ic_st_isLoading} >{ic_st_isLoginPage ? 'Login' : 'Sign Up'} </Button>
+                        <Button sx={{ margin: "5px" }} color={'success'} variant={"contained"} onClick={ic_st_isLoginPage ? () => { ic_sf_signInExistingUser(email, password) } : () => ic_sf_createUser(email, password)} disabled={ic_st_isLoading} >{ic_st_isLoginPage ? 'Login' : 'Sign Up'} </Button>
                         {
                             ic_st_isLoginPage ?
                                 <Typography onClick={() => ic_st_setIsLoginPage(false)} variant="subtitle1" gutterBottom component="div">Belum punya akun ? <span style={{ color: 'blue' }}>daftar</span></Typography>
