@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import md5 from 'md5';
 //icons
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -16,7 +16,7 @@ const KCDialogCart = (props) => {
     const dispatch = useDispatch();
     const { updateCurrentCart } = bindActionCreators(actionCreators, dispatch);
     //props
-    const { isOpen, cart, handleClose } = props;
+    const { isOpen, cart, nomorMeja, handleClose, handleOrder, handleChange } = props;
     const deleteItem = (key) => {
         const newCart = {}
         Object.keys(cart).forEach((k) => {
@@ -73,12 +73,13 @@ const KCDialogCart = (props) => {
                 {
                     displayTable(cart)
                 }
+                <TextField type={'text'} label={'Nomor Meja'} value={nomorMeja} sx={{ marginTop: '20px', width: '100%' }} onChange={(e) => {
+                    handleChange(e.target.value)
+                }} />
             </DialogContent>
             <DialogActions>
                 <Button color={'error'} startIcon={<CancelIcon />} onClick={() => handleClose()} >Tutup</Button>
-                <Button color={'success'} startIcon={<AddShoppingCartIcon />} variant={'contained'} onClick={() => {
-
-                }} disabled={Object.keys(cart).length === 0} >Order</Button>
+                <Button color={'success'} startIcon={<AddShoppingCartIcon />} variant={'contained'} onClick={handleOrder} disabled={Object.keys(cart).length === 0} >Order</Button>
             </DialogActions>
         </Dialog>
     )

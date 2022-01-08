@@ -44,74 +44,53 @@ function RMSTempDrawer(props) {
             </List>
             <Divider />
             <List>
-                <Link to="/input-kk" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Input KK"}>
+                <Link to="/lihat-pesanan" style={{ textDecoration: "none", color: "initial" }}>
+                    <ListItem button key={"Pesanan (Customer)"}>
                         <ListItemIcon>
                             <AddReactionIcon />
                         </ListItemIcon>
-                        <ListItemText primary={"Input KK"} />
+                        <ListItemText primary={"Pesanan (Customer)"} />
                     </ListItem>
                 </Link>
-                <Link to="/lihat-kk" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Lihat KK"}>
+                <Link to="/lihat-tagihan" style={{ textDecoration: "none", color: "initial" }}>
+                    <ListItem button key={"Tagihan (Customer)"}>
                         <ListItemIcon>
                             <FamilyRestroomIcon />
                         </ListItemIcon>
-                        <ListItemText primary={"Lihat KK"} />
+                        <ListItemText primary={"Tagihan (Customer)"} />
                     </ListItem>
                 </Link>
             </List>
             <Divider />
             <List>
                 <Link to="/input-biaya" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Input Biaya Custom"}>
+                    <ListItem button key={"Pesanan (Bar)"}>
                         <ListItemIcon>
                             <AddCircleIcon />
                         </ListItemIcon>
-                        <ListItemText primary={"Input Biaya Custom"} />
-                    </ListItem>
-                </Link>
-                <Link to="/lihat-biaya" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Lihat Biaya Custom"}>
-                        <ListItemIcon>
-                            <FindInPageIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Lihat Biaya Custom"} />
-                    </ListItem>
-                </Link>
-                <Link to="/pengaturan-biaya" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Pengaturan Biaya"}>
-                        <ListItemIcon>
-                            <AttachMoneyIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Pengaturan Biaya"} />
+                        <ListItemText primary={"Pesanan (Bar)"} />
                     </ListItem>
                 </Link>
             </List>
             <Divider />
             <List>
-                <Link to="/buat-invoice-umum" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Buat Invoice"}>
+                <Link to="/lihat-biaya" style={{ textDecoration: "none", color: "initial" }}>
+                    <ListItem button key={"Pesanan (Dapur)"}>
                         <ListItemIcon>
-                            <NoteAddIcon />
+                            <FindInPageIcon />
                         </ListItemIcon>
-                        <ListItemText primary={"Buat Invoice"} />
+                        <ListItemText primary={"Pesanan (Dapur)"} />
                     </ListItem>
                 </Link>
-                <Link to="/buat-invoice" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Buat Invoice Bulanan"}>
-                        <ListItemIcon>
-                            <LibraryAddIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={"Buat Invoice Bulanan"} />
-                    </ListItem>
-                </Link>
+            </List>
+            <Divider />
+            <List>
                 <Link to="/lihat-invoice/noid" style={{ textDecoration: "none", color: "initial" }}>
-                    <ListItem button key={"Lihat Invoice"}>
+                    <ListItem button key={"Lihat Tagihan (Admin)"}>
                         <ListItemIcon>
                             <SearchIcon />
                         </ListItemIcon>
-                        <ListItemText primary={"Lihat Invoice"} />
+                        <ListItemText primary={"Lihat Tagihan (Admin)"} />
                     </ListItem>
                 </Link>
             </List>

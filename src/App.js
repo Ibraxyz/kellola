@@ -33,6 +33,7 @@ const App = () => {
   const [ic_st_isCartOpen, ic_st_setIsCartOpen] = useState(false);
   const [ic_st_user, ic_st_setUser] = useState(null);
   const [ic_st_isLoading, ic_st_setIsLoading] = useState(false);
+  const [ic_st_nomorMeja, ic_st_setNomorMeja] = useState(null);
   //redux 
   const dispatch = useDispatch();
   const { updateCurrentLoginStatus, updateCurrentUser } = bindActionCreators(actionCreators, dispatch);
@@ -101,6 +102,13 @@ const App = () => {
       h_sf_showSnackbar(err.message, 'error');
     }
   });
+  //handle order
+  const handleOrder = () => {
+    if (ic_st_nomorMeja === null | undefined | "") {
+      h_sf_showSnackbar('Nomor Meja tidak boleh kosong', 'error');
+      return;
+    }
+  }
   if (r_currentLoginStatus === true) {
     return (
       <Router>
@@ -130,7 +138,14 @@ const App = () => {
           </Fab>
         </Box>
         {/** Dialog Cart */}
-        <KCDialogCart isOpen={ic_st_isCartOpen} cart={r_currentCart} handleClose={() => ic_st_setIsCartOpen(false)} />
+        <KCDialogCart
+          isOpen={ic_st_isCartOpen}
+          cart={r_currentCart}
+          nomorMeja={ic_st_nomorMeja}
+          handleClose={() => ic_st_setIsCartOpen(false)}
+          handleOrder={handleOrder}
+          handleChange={(v)=>ic_st_setNomorMeja(v)}
+        />
       </Router>
     )
   } else {
