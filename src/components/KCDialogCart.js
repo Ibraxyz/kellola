@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, Box } from '@mui/material';
 import md5 from 'md5';
 //icons
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -66,6 +66,13 @@ const KCDialogCart = (props) => {
             <RMSCleanTable tableHead={['name', 'total', 'action']} rows={objArr} />
         );
     }
+    const getTotal = () => {
+        let total = 0;
+        Object.keys(cart).forEach((c) => {
+            total += parseInt(cart[c]['total']);
+        })
+        return total;
+    }
     return (
         <Dialog open={isOpen}>
             <DialogTitle textAlign={'center'}>Your Cart</DialogTitle>
@@ -73,7 +80,10 @@ const KCDialogCart = (props) => {
                 {
                     displayTable(cart)
                 }
-                <TextField type={'text'} label={'Nomor Meja'} value={nomorMeja} sx={{ marginTop: '20px', width: '100%' }} onChange={(e) => {
+                <Box sx={{ padding: '10px' }} textAlign={'right'}>
+                    <Typography variant={'subtitle2'}>Total : Rp {formatRupiah(getTotal())}</Typography>
+                </Box>
+                <TextField type={'text'} label={'Nomor Meja'} value={nomorMeja} sx={{ marginTop: '5px', width: '100%' }} onChange={(e) => {
                     handleChange(e.target.value)
                 }} />
             </DialogContent>

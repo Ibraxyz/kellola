@@ -40,7 +40,11 @@ const RMSCleanTable = (props) => {
                                         props.tableHead.map((th) => {
                                             let displayedAs = row[th];
                                             if (th === 'name') {
-                                                displayedAs = `${row[th]} x ( ${row['qty']} ) @ Rp ${formatRupiah(row['price'])}`
+                                                if (row['price'] === undefined) {
+
+                                                } else {
+                                                    displayedAs = `${row[th]} x ( ${row['qty'] === undefined ? '' : row['qty']} ) @ Rp ${row['price'] === undefined ? '' : formatRupiah(row['price'])}`
+                                                }
                                             } else if (th === 'total') {
                                                 displayedAs = `Rp ${formatRupiah(row['total'])}`
                                             } else if (th === 'aksi') {
@@ -49,6 +53,13 @@ const RMSCleanTable = (props) => {
                                                         <Button sx={{ marginRight: '5px' }} onClick={row['edit']} startIcon={<EditIcon />} variant={'contained'}>Edit</Button>
                                                         <Button onClick={row['hapus']} variant={'outlined'} startIcon={<DeleteIcon />}>Hapus</Button>
                                                     </>
+                                            } else if (th === 'tindakan') {
+                                                displayedAs =
+                                                    <>
+                                                        <Button onClick={row['hapus']} variant={'outlined'} startIcon={<DeleteIcon />} color={'error'}>Batal</Button>
+                                                    </>
+                                            } else if (th === 'status') {
+                                                displayedAs = row[th] === 1 ? 'Dipesan' : row[th] === 2 ? 'Dibuat' : row[th] === 3 ? 'Diantar' : '-'
                                             } else if (th === 'action') {
                                                 displayedAs =
                                                     <>

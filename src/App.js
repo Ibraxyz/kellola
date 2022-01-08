@@ -18,7 +18,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from "./state/index";
 //firebase
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 //db
 import { db } from './';
 //comps
@@ -26,6 +26,10 @@ import KCDialogCart from './components/KCDialogCart';
 //pages
 import KCHome from './pages/KCHome';
 import RMSSignUp from './pages/RMSSignUp';
+import KCPesananCustomer from './pages/KCPesananCustomer';
+import RMSSnackbar from './components/RMSSnackbar';
+import { updateCurrentCart } from './state/action-creators';
+import md5 from 'md5';
 
 const App = () => {
   const [ic_st_isDrawerOpen, ic_st_setIsDrawerOpen] = useState(false);
@@ -102,12 +106,44 @@ const App = () => {
       h_sf_showSnackbar(err.message, 'error');
     }
   });
+  //cancelItem 
+  const cancelItem = (id) => {
+
+  }
+  //make order
+  const makeOrder = async () => {
+    try {
+      const objArr = [];
+      //save the order to database
+      Object.keys(r_currentCart).forEach((key) => {
+        for (let i = 0; i < parseInt(r_currentCart[key]['qty']); i++) {
+          objArr.push({
+            "id": md5(r_currentCart[key]['name'] + Date.now()),
+            "name": r_currentCart[key]['name'],
+            "meja" : ic_st_nomorMeja,
+            "status": 1,
+          });
+        }
+      })
+      await setDoc(doc(db, `order/${ic_st_nomorMeja}`), {
+        "list": objArr
+      });
+      h_sf_showSnackbar(`Terima kasih ${r_currentUser.name}! , Status pesanan anda dapat dilihat di halaman lihat pesanan.`);
+      //close the cart dialog
+      ic_st_setIsCartOpen(false);
+      //emptying the cart
+      //......
+    } catch (err) {
+      h_sf_showSnackbar(err.message, 'error');
+    }
+  }
   //handle order
   const handleOrder = () => {
     if (ic_st_nomorMeja === null | undefined | "") {
       h_sf_showSnackbar('Nomor Meja tidak boleh kosong', 'error');
       return;
     }
+    makeOrder();
   }
   if (r_currentLoginStatus === true) {
     return (
@@ -130,6 +166,9 @@ const App = () => {
               <Route path="/" exact={true}>
                 <KCHome />
               </Route>
+              <Route path="/lihat-pesanan">
+                <KCPesananCustomer />
+              </Route>
             </Box>
           </Container>
           {/** cart opener */}
@@ -144,7 +183,14 @@ const App = () => {
           nomorMeja={ic_st_nomorMeja}
           handleClose={() => ic_st_setIsCartOpen(false)}
           handleOrder={handleOrder}
-          handleChange={(v)=>ic_st_setNomorMeja(v)}
+          handleChange={(v) => ic_st_setNomorMeja(v)}
+        />
+        {/** Snackbar */}
+        <RMSSnackbar
+          isOpen={h_st_isSnackbarShown}
+          message={h_st_message}
+          severity={h_st_severity}
+          handleClose={h_sf_closeSnackbar}
         />
       </Router>
     )
