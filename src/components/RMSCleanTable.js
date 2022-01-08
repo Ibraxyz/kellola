@@ -38,7 +38,6 @@ const RMSCleanTable = (props) => {
                                     </TableCell>
                                     {
                                         props.tableHead.map((th) => {
-                                            console.log(`row[th]`, row[th])
                                             let displayedAs = row[th];
                                             if (th === 'name') {
                                                 displayedAs = `${row[th]} x ( ${row['qty']} ) @ Rp ${formatRupiah(row['price'])}`

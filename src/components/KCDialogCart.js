@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Button, LinearProgress, Chip, Box, Typography, Grid, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import md5 from 'md5';
 //icons
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -27,6 +27,8 @@ const KCDialogCart = (props) => {
         updateCurrentCart(newCart);
     }
     const editItem = (key, type) => {
+        console.log('cart', JSON.stringify(cart));
+        console.log('{...cart', JSON.stringify({ ...cart }))
         const newCart = { ...cart };
         switch (type) {
             case "inc":

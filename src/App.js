@@ -17,7 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from 'redux';
 import { actionCreators } from "./state/index";
 //firebase
-import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 //comps
 import KCHome from './pages/KCHome';
 import KCDialogCart from './components/KCDialogCart';

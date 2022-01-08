@@ -10,7 +10,7 @@ const KCQtyDialog = (props) => {
         <Dialog open={isOpen}>
             <DialogTitle textAlign={'center'}>Qty for {name}</DialogTitle>
             <DialogContent>
-                <TextField type={"number"} value={qty} onChange={(e)=>handleChange(e.target.value)} />
+                <TextField type={"number"} value={qty < 1 ? 1 : qty} onChange={(e)=>handleChange(e.target.value)} />
             </DialogContent>
             <DialogActions>
                 <Button color={'error'} startIcon={<CancelIcon />} onClick={handleClose} >Cancel</Button>
