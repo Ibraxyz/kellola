@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Paper, Typography, Divider, Skeleton } from '@mui/material';
+import { Box, Paper, Typography, Divider, Skeleton, LinearProgress } from '@mui/material';
 import RMSCleanTable from '../components/RMSCleanTable';
 import { db } from '../';
 import { getDocs, collection, query, where, updateDoc, doc } from 'firebase/firestore';
@@ -26,6 +26,9 @@ const KCPesananDapur = (props) => {
     ] = usePesanan('food');
     return (
         <Box>
+            {
+                ic_st_isLoading ? <LinearProgress /> : <></>
+            }
             <Paper>
                 <Box sx={{ padding: '10px' }}>
                     <Typography variant={'subtitle2'}> Pesanan Dapur </Typography>
@@ -33,27 +36,25 @@ const KCPesananDapur = (props) => {
                 <Divider />
                 <Box sx={{ padding: '10px' }}>
                     {
-                        ic_st_isLoading ?
-                            <Skeleton variant={'rectangular'} width={'100%'} height={400} /> :
-                            ic_st_orders.map((order) => {
-                                return (
-                                    <Accordion>
-                                        <AccordionSummary
-                                            expandIcon={<ExpandMoreIcon />}
-                                            aria-controls="panel1a-content"
-                                            id="panel1a-header"
-                                        >
-                                            <Typography>Meja No. {order.id}</Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-                                            <RMSCleanTable
-                                                tableHead={["name", "meja", "status", "tindakan-diperlukan"]}
-                                                rows={order['list']}
-                                            />
-                                        </AccordionDetails>
-                                    </Accordion>
-                                )
-                            })
+                        ic_st_orders.map((order) => {
+                            return (
+                                <Accordion>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1a-content"
+                                        id="panel1a-header"
+                                    >
+                                        <Typography>Meja No. {order.id}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <RMSCleanTable
+                                            tableHead={["name", "meja", "status", "tindakan-diperlukan"]}
+                                            rows={order['list']}
+                                        />
+                                    </AccordionDetails>
+                                </Accordion>
+                            )
+                        })
                     }
                 </Box>
             </Paper>

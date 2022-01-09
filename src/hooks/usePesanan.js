@@ -33,6 +33,7 @@ const usePesanan = (type) => {
     //get order
     const handleUpdateStatus = async (v, obj, dl) => {
         try {
+            ic_st_setIsLoading(true);
             const newObj = obj.map((o) => {
                 if (o.id === dl.id) {
                     o.status = v
@@ -43,11 +44,13 @@ const usePesanan = (type) => {
                 list: newObj
             });
             h_sf_showSnackbar(`Pesanan dengan id ${dl.id} sekarang ${v}`, 'success');
+            ic_st_setIsLoading(false);
             //recursively construct data with newly updated data
             await getOrder();
         } catch (err) {
             console.log(err.message);
             h_sf_showSnackbar(err.message, 'error');
+            ic_st_setIsLoading(false);
         }
     }
     const getOrder = async () => {
@@ -55,7 +58,7 @@ const usePesanan = (type) => {
             h_sf_showSnackbar('Belum ada pesanan', 'error');
         } else {
             try {
-                //ic_st_setIsLoading(true);
+                ic_st_setIsLoading(true);
                 const ref = collection(db, `order`);
                 const orders = await getDocs(query(ref));
                 const orderArr = [];
@@ -79,10 +82,10 @@ const usePesanan = (type) => {
                     });
                 });
                 ic_st_setOrders(orderArr);
-                //ic_st_setIsLoading(false);
+                ic_st_setIsLoading(false);
             } catch (err) {
                 console.log(err.message);
-                //ic_st_setIsLoading(false);
+                ic_st_setIsLoading(false);
             }
         }
     }

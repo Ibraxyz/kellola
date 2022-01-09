@@ -72,7 +72,7 @@ const RMSCleanTable = (props) => {
                                                         </Select>
                                                     </>
                                             } else if (th === 'status') {
-                                                displayedAs = row[th] === 1 ? 'Dipesan' : row[th] === 2 ? 'Dibuat' : row[th] === 3 ? 'Diantar' : '-'
+                                                displayedAs = row[th] === 1 ? 'Dipesan' : row[th] === 2 ? 'Sedang Dibuat' : row[th] === 3 ? 'Selesai Dibuat' : row[th] === 4 ? 'Sedang Diantar' : row[th] === 5 ? 'Selesai Diantar' : '-';
                                             } else if (th === 'action') {
                                                 displayedAs =
                                                     <>
