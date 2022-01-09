@@ -63,7 +63,7 @@ function RMSTempDrawer(props) {
             </List>
             <Divider />
             <List>
-                <Link to="/input-biaya" style={{ textDecoration: "none", color: "initial" }}>
+                <Link to="/lihat-pesanan-bar" style={{ textDecoration: "none", color: "initial" }}>
                     <ListItem button key={"Pesanan (Bar)"}>
                         <ListItemIcon>
                             <AddCircleIcon />
@@ -74,7 +74,7 @@ function RMSTempDrawer(props) {
             </List>
             <Divider />
             <List>
-                <Link to="/lihat-biaya" style={{ textDecoration: "none", color: "initial" }}>
+                <Link to="/lihat-pesanan-dapur" style={{ textDecoration: "none", color: "initial" }}>
                     <ListItem button key={"Pesanan (Dapur)"}>
                         <ListItemIcon>
                             <FindInPageIcon />

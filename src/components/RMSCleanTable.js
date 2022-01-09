@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, IconButton } from '@mui/material';
+import { Table, Button, IconButton, Select } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -56,7 +56,12 @@ const RMSCleanTable = (props) => {
                                             } else if (th === 'tindakan') {
                                                 displayedAs =
                                                     <>
-                                                        <Button onClick={row['hapus']} variant={'outlined'} startIcon={<DeleteIcon />} color={'error'}>Batal</Button>
+                                                        <Button onClick={row['hapus']} variant={'outlined'} startIcon={<DeleteIcon />} color={'error'} disabled={row['status'] > 1} >Batal</Button>
+                                                    </>
+                                            } else if (th === 'tindakan-bar') {
+                                                displayedAs =
+                                                    <>
+                                                        <Select option={[]} label={'Update Status Pesanan'} onChange={(e)=>row['handleUpdate']}/>
                                                     </>
                                             } else if (th === 'status') {
                                                 displayedAs = row[th] === 1 ? 'Dipesan' : row[th] === 2 ? 'Dibuat' : row[th] === 3 ? 'Diantar' : '-'

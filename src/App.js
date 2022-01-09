@@ -29,6 +29,8 @@ import RMSSignUp from './pages/RMSSignUp';
 import KCPesananCustomer from './pages/KCPesananCustomer';
 import RMSSnackbar from './components/RMSSnackbar';
 import md5 from 'md5';
+import KCPesananBar from './pages/KCPesananBar';
+import KCPesananDapur from './pages/KCPesananDapur';
 
 const App = () => {
   const [ic_st_isDrawerOpen, ic_st_setIsDrawerOpen] = useState(false);
@@ -167,6 +169,12 @@ const App = () => {
               </Route>
               <Route path="/lihat-pesanan">
                 <KCPesananCustomer />
+              </Route>
+              <Route path="/lihat-pesanan-bar">
+                <KCPesananBar />
+              </Route>
+              <Route path="/lihat-pesanan-dapur">
+                <KCPesananDapur />
               </Route>
             </Box>
           </Container>
