@@ -109,6 +109,14 @@ function RMSTempDrawer(props) {
                         <ListItemText primary={"Pengaturan User (Admin)"} />
                     </ListItem>
                 </Link>
+                <Link to="/manage-user" style={{ textDecoration: "none", color: "initial" }}>
+                    <ListItem button key={"Pengaturan Produk (Admin)"}>
+                        <ListItemIcon>
+                            <SettingsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={"Pengaturan Produk (Admin)"} />
+                    </ListItem>
+                </Link>
             </List>
             <Divider />
             <List>

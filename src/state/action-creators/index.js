@@ -42,3 +42,12 @@ export const updateCurrentSearchKeyword = (payload)=>{
         });
     }
 }
+
+export const updateCurrentTableNumber = (payload)=>{
+    return(dispatch)=>{
+        dispatch({
+            "type" : "UPDATE_TABLE_NUMBER",
+            "payload" : payload
+        });
+    }
+}

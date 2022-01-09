@@ -4,6 +4,7 @@ import currentPathReducer from "./currentPathReducer";
 import currentUserReducer from "./currentUserReducer";
 import currentCartReducer from "./currentCartReducer";
 import currentSearchKeywordReducer from "./currentSearchKeywordReducer";
+import currentTableNumberReducer from "./currentTableNumberReducer";
 
 const reducers = combineReducers({
     currentPath: currentPathReducer,
@@ -11,6 +12,7 @@ const reducers = combineReducers({
     currentUser: currentUserReducer,
     currentCart: currentCartReducer,
     currentSearchKeyword: currentSearchKeywordReducer,
+    currentTableNumber: currentTableNumberReducer,
 });
 
 export default reducers;

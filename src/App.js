@@ -28,7 +28,6 @@ import KCHome from './pages/KCHome';
 import RMSSignUp from './pages/RMSSignUp';
 import KCPesananCustomer from './pages/KCPesananCustomer';
 import RMSSnackbar from './components/RMSSnackbar';
-import { updateCurrentCart } from './state/action-creators';
 import md5 from 'md5';
 
 const App = () => {
@@ -40,7 +39,7 @@ const App = () => {
   const [ic_st_nomorMeja, ic_st_setNomorMeja] = useState(null);
   //redux 
   const dispatch = useDispatch();
-  const { updateCurrentLoginStatus, updateCurrentUser } = bindActionCreators(actionCreators, dispatch);
+  const { updateCurrentLoginStatus, updateCurrentUser, updateCurrentTableNumber } = bindActionCreators(actionCreators, dispatch);
   const r_currentPathState = useSelector((state) => state.currentPath);
   const r_currentLoginStatus = useSelector((state) => state.currentLoginStatus);
   const r_currentUser = useSelector((state) => state.currentUser);
@@ -120,7 +119,7 @@ const App = () => {
           objArr.push({
             "id": md5(r_currentCart[key]['name'] + Date.now()),
             "name": r_currentCart[key]['name'],
-            "meja" : ic_st_nomorMeja,
+            "meja": ic_st_nomorMeja,
             "status": 1,
           });
         }
@@ -183,7 +182,10 @@ const App = () => {
           nomorMeja={ic_st_nomorMeja}
           handleClose={() => ic_st_setIsCartOpen(false)}
           handleOrder={handleOrder}
-          handleChange={(v) => ic_st_setNomorMeja(v)}
+          handleChange={(v) => {
+            ic_st_setNomorMeja(v);
+            updateCurrentTableNumber(v);
+          }}
         />
         {/** Snackbar */}
         <RMSSnackbar
