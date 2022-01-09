@@ -107,10 +107,6 @@ const App = () => {
       h_sf_showSnackbar(err.message, 'error');
     }
   });
-  //cancelItem 
-  const cancelItem = (id) => {
-
-  }
   //make order
   const makeOrder = async () => {
     try {
@@ -119,15 +115,18 @@ const App = () => {
       Object.keys(r_currentCart).forEach((key) => {
         for (let i = 0; i < parseInt(r_currentCart[key]['qty']); i++) {
           objArr.push({
-            "id": md5(r_currentCart[key]['name'] + Date.now()),
+            "id": md5(Date.now() + Math.random() + r_currentCart[key]['productId']),
+            "productId": r_currentCart[key]['productId'],
             "name": r_currentCart[key]['name'],
             "meja": ic_st_nomorMeja,
             "status": 1,
+            "category": r_currentCart[key]['category']
           });
         }
       })
       await setDoc(doc(db, `order/${ic_st_nomorMeja}`), {
-        "list": objArr
+        "list": objArr,
+        "status": false,
       });
       h_sf_showSnackbar(`Terima kasih ${r_currentUser.name}! , Status pesanan anda dapat dilihat di halaman lihat pesanan.`);
       //close the cart dialog

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Paper, Typography, Divider, Skeleton } from '@mui/material';
+import { Box, Paper, Typography, Divider, Skeleton, LinearProgress } from '@mui/material';
 import RMSCleanTable from '../components/RMSCleanTable';
 import { db } from '../';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 //redux
 import { useSelector } from "react-redux";
 import useSnackbar from '../hooks/useSnackbar';
@@ -16,7 +16,7 @@ const KCPesananCustomer = (props) => {
     const [h_st_isSnackbarShown, h_st_message, h_st_severity, h_sf_showSnackbar, h_sf_closeSnackbar] = useSnackbar();
     //redux 
     const r_currentTableNumber = useSelector((state) => state.currentTableNumber);
-    //get order
+    //get order once
     const getOrder = async () => {
         if (r_currentTableNumber === undefined) {
             h_sf_showSnackbar('Belum ada pesanan', 'error');
@@ -36,25 +36,33 @@ const KCPesananCustomer = (props) => {
         }
     }
     useEffect(() => {
-        //getting current customer order
-        getOrder();
+        //listen for realtime updates on doc
+        ic_st_setIsLoading(true);
+        if (r_currentTableNumber !== "") {
+            const unsub = onSnapshot(doc(db, `order/${r_currentTableNumber}`), (doc) => {
+                console.log("Current data from PesananCustomer : ", doc.data());
+                ic_st_setOrders(doc.data()['list']);
+                ic_st_setIsLoading(false);
+            });
+        } else {
+            ic_st_setIsLoading(false);
+        }
     }, [])
     return (
         <Box>
+            {
+                ic_st_isLoading ? <LinearProgress /> : <></>
+            }
             <Paper>
                 <Box sx={{ padding: '10px' }}>
                     <Typography variant={'subtitle2'}> Pesanan Saya </Typography>
                 </Box>
                 <Divider />
                 <Box sx={{ padding: '10px' }}>
-                    {
-                        ic_st_isLoading ?
-                            <Skeleton variant={'rectangular'} width={'100%'} height={400} /> :
-                            <RMSCleanTable
-                                tableHead={["name", "meja", "status", "tindakan"]}
-                                rows={ic_st_orders}
-                            />
-                    }
+                    <RMSCleanTable
+                        tableHead={["name", "meja", "status", "tindakan"]}
+                        rows={ic_st_orders}
+                    />
                 </Box>
             </Paper>
             {/** RMS Snackbar */}

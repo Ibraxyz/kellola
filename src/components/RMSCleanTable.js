@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, IconButton, Select } from '@mui/material';
+import { Table, Button, IconButton, Select, MenuItem } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -58,10 +58,18 @@ const RMSCleanTable = (props) => {
                                                     <>
                                                         <Button onClick={row['hapus']} variant={'outlined'} startIcon={<DeleteIcon />} color={'error'} disabled={row['status'] > 1} >Batal</Button>
                                                     </>
-                                            } else if (th === 'tindakan-bar') {
+                                            } else if (th === 'tindakan-diperlukan') {
                                                 displayedAs =
                                                     <>
-                                                        <Select option={[]} label={'Update Status Pesanan'} onChange={(e)=>row['handleUpdate']}/>
+                                                        <Select label={'Update Status Pesanan'} value={row['defaultSelectedOption']} onChange={(e) => row['handleUpdate'](e.target.value)} >
+                                                            {
+                                                                row['tindakanOption'].map((op) => {
+                                                                    return (
+                                                                        <MenuItem value={op.value} >{op.text}</MenuItem>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </Select>
                                                     </>
                                             } else if (th === 'status') {
                                                 displayedAs = row[th] === 1 ? 'Dipesan' : row[th] === 2 ? 'Dibuat' : row[th] === 3 ? 'Diantar' : '-'

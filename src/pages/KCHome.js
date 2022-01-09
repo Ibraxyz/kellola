@@ -158,12 +158,13 @@ const KCHome = () => {
     }
     //snackbar
     const [h_st_isSnackbarShown, h_st_message, h_st_severity, h_sf_showSnackbar, h_sf_closeSnackbar] = useSnackbar();
-    const handleAddToCart = (id, name, price) => {
+    const handleAddToCart = (id, name, price, category) => {
         ic_st_setIsQtyDialogOpen(true);
         ic_st_setCurrentSelectedProd({
             "id": id,
             "name": name,
             "price": price,
+            "category": category
         })
     }
     const handleQTYChange = (num) => {
@@ -171,7 +172,7 @@ const KCHome = () => {
         obj.qty = num
         ic_st_setCurrentSelectedProd(obj);
     }
-    const addToCart = (id, name, price, qty) => {
+    const addToCart = (id, name, price, qty, category) => {
         if (qty === 0 || qty === undefined) {
             h_sf_showSnackbar('QTY must be larger than zero and can not be empty', 'error');
             return;
@@ -183,12 +184,12 @@ const KCHome = () => {
             cart[id]['total'] = cart[id]['qty'] * cart[id]['price']
         } else { //if not, construct the cart
             cart[id] = {
-                "id": md5(Date.now() + id),
                 "productId": id,
                 "name": name,
                 "price": price,
                 "qty": qty,
-                "total": price * qty
+                "total": price * qty,
+                "category": category
             }
         }
         updateCurrentCart(cart);
@@ -250,7 +251,7 @@ const KCHome = () => {
             <Grid container spacing={1}>
                 {
                     ic_st_filterdProductList.length === 0 ? <Box textAlign={'center'} sx={{ padding: '10px' }}><Typography variant={'subtitle1'}>Tidak ada item</Typography></Box> : ic_st_filterdProductList.map((product) => {
-                        const { id, name, imgSrc, price, isAvailable, description } = product;
+                        const { id, name, imgSrc, price, isAvailable, description, category } = product;
                         return (
                             <Grid item xs={12} sm={6} md={4} lg={3} key={md5(id + name + price + description)}>
                                 <KCProductCard
@@ -260,7 +261,7 @@ const KCHome = () => {
                                     imgSrc={imgSrc}
                                     price={price}
                                     description={description}
-                                    handleAddToCart={() => handleAddToCart(id, name, price)}
+                                    handleAddToCart={() => handleAddToCart(id, name, price, category)}
                                     isAvailable={isAvailable}
                                 />
                             </Grid>
@@ -275,7 +276,7 @@ const KCHome = () => {
                 qty={ic_st_currentSelectedProd.qty}
                 handleChange={(v) => handleQTYChange(v)}
                 handleClose={() => ic_st_setIsQtyDialogOpen(false)}
-                handleAddToCart={() => addToCart(ic_st_currentSelectedProd.id, ic_st_currentSelectedProd.name, ic_st_currentSelectedProd.price, ic_st_currentSelectedProd.qty)}
+                handleAddToCart={() => addToCart(ic_st_currentSelectedProd.id, ic_st_currentSelectedProd.name, ic_st_currentSelectedProd.price, ic_st_currentSelectedProd.qty, ic_st_currentSelectedProd.category)}
             />
             {/** Snackbar | isOpen, handleClose, severity, message */}
             <RMSSnackbar

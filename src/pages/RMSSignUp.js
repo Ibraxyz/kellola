@@ -110,7 +110,9 @@ const RMSSignUp = (props) => {
     const [isSnackbarShown, setIsSnackbarShown] = useState(false);
     const [message, setMessage] = useState("");
     useEffect(() => {
+        ic_st_setIsLoading(true);
         return () => {
+            ic_st_setIsLoading(false);
             console.log('rmssignup unmounted')
         };
     }, [])
